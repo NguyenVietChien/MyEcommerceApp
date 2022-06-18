@@ -1,6 +1,13 @@
 # from crawl.crawl.spiders.tipy import TipySpider
+import this
+from rest_framework.decorators import action
+from rest_framework.decorators import api_view
 from .serializers import TodoSerializer
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.pagination import PageNumberPagination
+from rest_framework import pagination
+from rest_framework.response import Response
+
 from django.views.generic import ListView
 from django.http import HttpResponse
 from django.core.serializers import serialize
@@ -16,7 +23,7 @@ from django.views.generic import View
 from requests import request
 from django.core import serializers
 # from .models import Friend
-from django.http import JsonResponse, request
+from django.http import JsonResponse, request, response
 from .models import *
 from django.db.models import Sum
 from django.core.paginator import Paginator
@@ -34,15 +41,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from scrapyd_api import ScrapydAPI
 
-# configure_logging()
-# settings = get_project_settings()
-# runner = CrawlerRunner(settings)
-# # runner.crawl(EcommerceSpiderSpider)
-# runner.crawl(TipySpider)
-# d = runner.join()
-# d.addBoth(lambda _: reactor.stop())
-
-# reactor.run()
 
 scrapyd = ScrapydAPI('http://localhost:6800')
 
@@ -91,49 +89,110 @@ def listing(request, page):
     return render(request, 'main.html', context)
 
 
+class CustomPagination(pagination.PageNumberPagination):
+    page_size = 40
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+    page_query_param = 'p'
+
+    def get_paginated_response(self, data):
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'count': self.page.paginator.count,
+            'results': data
+        })
+
+    # def get_page_size(self, request):
+    #     # if self.page_size_query_param:
+    #     # print(request)
+    #     # data = serializers.serialize(self.page_size)
+    #     return self.page_size
+
+
 class TodoView(viewsets.ModelViewSet):
 
+    queryset = Product.objects.all().order_by('product_name')
+
+    pagination_class = CustomPagination
+
     serializer_class = TodoSerializer
-    product = Product.objects.filter(
-        product_price__gte=20000, product_price__lte=200000)
+
+    @action(detail=False, methods=['post'])
+    def set_query(self, request, pk=None):
+        fromPrice = request.data.get('price').get('fromPrice')
+
+        toPrice = request.data.get('price').get('toPrice', 1200000)
+
+        recent_users = Product.objects.filter(
+            product_price__gte=fromPrice, product_price__lte=toPrice).order_by('product_name')
+
+        print(recent_users.count())
+        self.queryset = recent_users
+
+        # serializer = self.get_serializer(recent_users, many=True)
+
+        # self.queryset.save()
+        page = self.paginate_queryset(recent_users)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(recent_users, many=True)
+
+        print(self.queryset.count())
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class TodoView2(viewsets.ModelViewSet):
+
+    serializer_class = TodoSerializer
+    product = Product.objects.all().order_by('product_name')
+    # pagination_class = CustomPagination
     queryset = product
 
 
-@csrf_exempt
-@require_http_methods(['POST'])
+@api_view(['POST'])
+# @require_http_methods(['POST'])
 def crawl(request):
 
     if request.method == 'POST':
+        # print(request.data)
+        tikiUrl = request.data
 
-        tikiUrl = request.POST.get('tikiUrl', None)
-        shopeeUrl = request.POST.get('shopeeUrl', None)
-        lazadaUrl = request.POST.get('lazadaUrl', None)
-        configure_logging()
+        return JsonResponse({'url': tikiUrl})
 
-        settings = get_project_settings()
-        runner = CrawlerRunner(settings)
+        # shopeeUrl = request.POST.get('shopeeUrl', None)
+        # lazadaUrl = request.POST.get('lazadaUrl', None)
+        # configure_logging()
+
+        # settings = get_project_settings()
+        # runner = CrawlerRunner(settings)
         # runner.crawl(EcommerceSpiderSpider)
         # runner.crawl(TipySpider)
-        d = runner.join()
-        d.addBoth(lambda _: reactor.stop())
+        # d = runner.join()
+        # d.addBoth(lambda _: reactor.stop())
 
-        reactor.run()
+        # reactor.run()
 
-        return JsonResponse({'task_id': tikiUrl, 'status': 'started'})
+        # print(request.data)
 
 
-@csrf_exempt
-@require_http_methods(['POST'])
+# @csrf_exempt
+@api_view(['POST'])
+# @require_http_methods(['POST'])
 def filterProduct(request):
 
     if request.method == 'POST':
 
-        fromPrice = request.POST.get('fromPrice', None)
-        toPrice = request.POST.get('toPrice', None)
-        product = Product.objects.filter(
-            product_price__gte=fromPrice, product_price__lte=toPrice)
-        data = serialize('json', product)
-        obj = {'page_obj': product}
-        return render(request, 'main.html', obj)
+        fromPrice = request.data.get('price').get('fromPrice')
 
-        # return HttpResponse(data, content_type="application/json")
+        toPrice = request.data.get('price').get('toPrice', 1200000)
+
+        product2 = Product.objects.filter(
+            product_price__gte=fromPrice, product_price__lte=toPrice).order_by('product_name')
+        TodoView.queryset = product2
+
+        return JsonResponse({'fromPrice': fromPrice, 'toPrice': toPrice})

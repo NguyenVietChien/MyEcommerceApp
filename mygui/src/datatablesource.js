@@ -1,3 +1,8 @@
+
+import PersonAdd from "./components/tests/PersonAdd.jsx";
+import { useEffect, useState } from "react";
+
+
 export const userColumns = [
   { field: "id", headerName: "ID", width: 70 },
   {
@@ -121,3 +126,55 @@ export const userRows = [
     age: 65,
   },
 ];
+
+export default function Datas() {
+  const [items, setItems] = useState([]);
+
+  const [pageCount, setpageCount] = useState(0);
+
+  const getInitialState = () => {
+    const value = 1;
+    return value;
+  };
+
+  const [value, setValue] = useState(getInitialState);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  let limit = 40;
+
+  // console.log(limit)
+
+  useEffect(() => {
+    const getProduct = async () => {
+      const res = await fetch(
+        `http://127.0.0.1:8008/api/tasks/?p=1`
+      );
+      const data = await res.json();
+
+      const total = data.count;
+      setpageCount(Math.ceil(total / limit));
+
+      setItems(data.results)
+    };
+
+    getProduct();
+
+  }, [limit]);
+
+
+
+  const fetchComments = async (currentPage) => {
+    const res = await fetch(
+      `http://127.0.0.1:8008/api/tasks/?p=${currentPage}`
+    );
+    const data = await res.json();
+
+    return data;
+  };
+
+  return items
+
+}

@@ -6,8 +6,46 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useEffect, useState } from "react";
 
 const List = () => {
+
+  const [items, setItems] = useState([]);
+
+  const [pageCount, setpageCount] = useState(0);
+
+  const getInitialState = () => {
+    const value = 1;
+    return value;
+  };
+
+  const [value, setValue] = useState(getInitialState);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  let limit = 40;
+
+  // console.log(limit)
+
+  useEffect(() => {
+    const getProduct = async () => {
+      const res = await fetch(
+        `http://127.0.0.1:8008/api/tasks/?p=1`
+      );
+      const data = await res.json();
+
+      const total = data.count;
+      setpageCount(Math.ceil(total / limit));
+
+      setItems(data.results)
+    };
+
+    getProduct();
+
+  }, [limit]);
+
   const rows = [
     {
       id: 1143155,
@@ -39,6 +77,7 @@ const List = () => {
       method: "Cash on Delivery",
       status: "Pending",
     },
+
     {
       id: 2357741,
       product: "Razer Blade 15",
@@ -49,6 +88,7 @@ const List = () => {
       method: "Online",
       status: "Approved",
     },
+
     {
       id: 2342355,
       product: "ASUS ROG Strix",
@@ -60,6 +100,7 @@ const List = () => {
       status: "Pending",
     },
   ];
+
   return (
     <TableContainer component={Paper} className="table">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -75,7 +116,7 @@ const List = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {items.map((row) => (
             <TableRow key={row.id}>
               <TableCell className="tableCell">{row.id}</TableCell>
               <TableCell className="tableCell">
@@ -84,7 +125,7 @@ const List = () => {
                   {row.product}
                 </div>
               </TableCell>
-              <TableCell className="tableCell">{row.customer}</TableCell>
+              <TableCell className="tableCell">{row.product_name}</TableCell>
               <TableCell className="tableCell">{row.date}</TableCell>
               <TableCell className="tableCell">{row.amount}</TableCell>
               <TableCell className="tableCell">{row.method}</TableCell>
