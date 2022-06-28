@@ -1,0 +1,14 @@
+
+env\scripts\activate
+
+cd myecommerce
+
+cd crawltest
+
+cd mygui
+
+
+scrapy crawl shopee_crawl2
+
+npm start
+

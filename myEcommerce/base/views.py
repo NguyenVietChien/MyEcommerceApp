@@ -1,4 +1,6 @@
 # from crawl.crawl.spiders.tipy import TipySpider
+from rest_framework import filters
+from rest_framework import generics
 import this
 from rest_framework.decorators import action
 from rest_framework.decorators import api_view
@@ -41,6 +43,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from scrapyd_api import ScrapydAPI
 
+from rest_framework import generics
+import django_filters.rest_framework
 
 scrapyd = ScrapydAPI('http://localhost:6800')
 
@@ -58,35 +62,6 @@ def is_valid_url(url):
 class SchedulingError(Exception):
     def __str__(self):
         return 'scheduling error'
-
-
-class Ecommerce(View):
-
-    paginate_by = 20
-    model = Product
-
-    def get(self, request):
-        obj = {
-            'page_obj': Product.objects.all(),
-            'total':  Product.objects.all().count(),
-            'total_price': Product.objects.aggregate(Sum('product_price')),
-            'rating_5_star': Product.objects.aggregate(Sum('rating_5_star')),
-            'rating_4_star': Product.objects.aggregate(Sum('rating_4_star')),
-            'rating_3_star': Product.objects.aggregate(Sum('rating_3_star')),
-            'rating_2_star': Product.objects.aggregate(Sum('rating_2_star')),
-            'rating_1_star': Product.objects.aggregate(Sum('rating_1_star')),
-        }
-
-        return render(request, 'main.html', obj)
-
-
-def listing(request, page):
-    keywords = Product.objects.all()
-    paginator = Paginator(keywords, per_page=20)
-    page_object = paginator.get_page(page)
-    page_object.adjusted_elided_pages = paginator.get_elided_page_range(page)
-    context = {"page_obj": page_object}
-    return render(request, 'main.html', context)
 
 
 class CustomPagination(pagination.PageNumberPagination):
@@ -120,64 +95,103 @@ class TodoView(viewsets.ModelViewSet):
 
     serializer_class = TodoSerializer
 
-    @action(detail=False, methods=['post'])
+    @action(detail=False, methods=['get'])
     def set_query(self, request, pk=None):
-        fromPrice = request.data.get('price').get('fromPrice')
+        obj = {
+            'page_obj': Product.objects.all(),
+            'total':  Product.objects.all().count(),
+            'total_price': Product.objects.aggregate(Sum('product_price')),
+            'rating_5_star': Product.objects.aggregate(Sum('rating_5_star')),
+            'rating_4_star': Product.objects.aggregate(Sum('rating_4_star')),
+            'rating_3_star': Product.objects.aggregate(Sum('rating_3_star')),
+            'rating_2_star': Product.objects.aggregate(Sum('rating_2_star')),
+            'rating_1_star': Product.objects.aggregate(Sum('rating_1_star')),
+        }
 
-        toPrice = request.data.get('price').get('toPrice', 1200000)
+        product = Product.objects.all()
 
-        recent_users = Product.objects.filter(
-            product_price__gte=fromPrice, product_price__lte=toPrice).order_by('product_name')
+        serializer = self.get_serializer(obj, many=True)
 
-        print(recent_users.count())
-        self.queryset = recent_users
-
-        # serializer = self.get_serializer(recent_users, many=True)
-
-        # self.queryset.save()
-        page = self.paginate_queryset(recent_users)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(recent_users, many=True)
-
-        print(self.queryset.count())
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return JsonResponse({'total':  Product.objects.all().count(),
+                             'total_price': Product.objects.aggregate(Sum('product_price')),
+                             'total_comments': Product.objects.aggregate(Sum('total_comments')),
+                             })
 
 
-class TodoView2(viewsets.ModelViewSet):
+class PurchaseList(generics.ListAPIView):
 
     serializer_class = TodoSerializer
-    product = Product.objects.all().order_by('product_name')
-    # pagination_class = CustomPagination
-    queryset = product
+
+    pagination_class = CustomPagination
+
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['product_name']
+
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['product_name', 'product_price',
+                       'rating_point', 'total_comments']
+
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        # fromPrice = self.request
+        minPrice = self.request.query_params.get('minPrice')
+        maxPrice = self.request.query_params.get('maxPrice')
+        ordering = self.request.query_params.get('ordering')
+        if ordering is None:
+            ordering = 'product_price'
+        else:
+            ordering = '-' + ordering
+        if minPrice is not None and maxPrice is not None:
+            queryset = queryset.filter(
+                product_price__gte=minPrice, product_price__lte=maxPrice)
+        queryset = queryset.order_by(ordering)
+        print(ordering)
+        return queryset
 
 
 @api_view(['POST'])
 # @require_http_methods(['POST'])
 def crawl(request):
-
     if request.method == 'POST':
         # print(request.data)
-        tikiUrl = request.data
+        tikiUrl = request.data.get('tikiUrl')
+        shopeeUrl = request.data.get('shopeeUrl')
+        lazadaUrl = request.data.get('lazadaUrl')
 
-        return JsonResponse({'url': tikiUrl})
+        url = tikiUrl
+        if not url:
+            return JsonResponse(
+                {'error': 'URL 없음'},
+                status=HTTPStatus.BAD_REQUEST
+            )
+        if not is_valid_url(url):
+            return JsonResponse(
+                {'error': 'URL 유효하지 않음'},
+                status=HTTPStatus.BAD_REQUEST
+            )
+        domain = urlparse(url).netloc
+        unique_id = str(uuid4())
 
-        # shopeeUrl = request.POST.get('shopeeUrl', None)
-        # lazadaUrl = request.POST.get('lazadaUrl', None)
-        # configure_logging()
-
-        # settings = get_project_settings()
-        # runner = CrawlerRunner(settings)
-        # runner.crawl(EcommerceSpiderSpider)
-        # runner.crawl(TipySpider)
-        # d = runner.join()
-        # d.addBoth(lambda _: reactor.stop())
-
-        # reactor.run()
-
-        # print(request.data)
+        settings = {
+            'unique_id': unique_id,
+            'USER_AGENT': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+        }
+        try:
+            task = scrapyd.schedule(
+                'default', 'tikipy',
+                settings=settings,
+                url=url.encode('utf8'),
+                domain=domain
+            )
+        except SchedulingError as e:
+            return JsonResponse(
+                {'error': e},
+                status=HTTPStatus.INTERNAL_SERVER_ERROR
+            )
+        return JsonResponse({'task_id': task,
+                             'unique_id': unique_id,
+                             'status': 'started',
+                             'url': url})
 
 
 # @csrf_exempt

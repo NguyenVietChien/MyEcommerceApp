@@ -12,5 +12,4 @@ class TodoSerializer(serializers.ModelSerializer):
     # create a meta class
     class Meta:
         model = Product
-        fields = ('product_name', 'product_price',
-                  'product_link', 'rating_point', 'total_comments')
+        fields = '__all__'

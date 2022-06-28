@@ -1,0 +1,24 @@
+2022-06-27 16:29:13 [scrapy.utils.log] INFO: Scrapy 1.7.3 started (bot: crawl)
+2022-06-27 16:29:13 [scrapy.utils.log] INFO: Versions: lxml 4.4.1.0, libxml2 2.9.5, cssselect 1.1.0, parsel 1.5.2, w3lib 1.21.0, Twisted 19.7.0, Python 3.6.0 (v3.6.0:41df79263a11, Dec 23 2016, 08:06:12) [MSC v.1900 64 bit (AMD64)], pyOpenSSL 19.0.0 (OpenSSL 1.1.1c  28 May 2019), cryptography 2.7, Platform Windows-10-10.0.19041-SP0
+2022-06-27 16:29:13 [scrapy.crawler] INFO: Overridden settings: {'BOT_NAME': 'crawl', 'COMMANDS_MODULE': 'crawl.commands', 'DUPEFILTER_CLASS': 'scrapy_splash.SplashAwareDupeFilter', 'HTTPCACHE_STORAGE': 'scrapy_splash.SplashAwareFSCacheStorage', 'LOG_FILE': 'logs\\default\\tikipy\\9854006cf5fb11ec86f6acd564a90faa.log', 'NEWSPIDER_MODULE': 'crawl.spiders', 'SPIDER_MODULES': ['crawl.spiders'], 'USER_AGENT': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'}
+2022-06-27 16:29:13 [scrapy.extensions.telnet] INFO: Telnet Password: f962608eb05be58f
+2022-06-27 16:29:13 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.logstats.LogStats']
+2022-06-27 16:29:13 [twisted] CRITICAL: Unhandled error in Deferred:
+2022-06-27 16:29:13 [twisted] CRITICAL: 
+Traceback (most recent call last):
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\twisted\internet\defer.py", line 1418, in _inlineCallbacks
+    result = g.send(result)
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\scrapy\crawler.py", line 85, in crawl
+    self.spider = self._create_spider(*args, **kwargs)
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\scrapy\crawler.py", line 108, in _create_spider
+    return self.spidercls.from_crawler(self, *args, **kwargs)
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\scrapy\spiders\crawl.py", line 118, in from_crawler
+    spider = super(CrawlSpider, cls).from_crawler(crawler, *args, **kwargs)
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\scrapy\spiders\__init__.py", line 50, in from_crawler
+    spider = cls(*args, **kwargs)
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\myecommerce\crawl\crawl\spiders\tikipy.py", line 15, in __init__
+    url = kwargs.get('url').encode('utf8')
+AttributeError: 'NoneType' object has no attribute 'encode'

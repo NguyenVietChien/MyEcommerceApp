@@ -5,19 +5,26 @@ import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalance
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 
-const Widget = ({ type }) => {
+function Widget({ type, amount }) {
   let data;
 
-  //temporary
-  const amount = 100;
+
+  let currencyFormat;
+  if (amount !== null && amount !== undefined) {
+    currencyFormat = amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+  }
+  else {
+    currencyFormat = 0;
+  }
+
   const diff = 20;
 
   switch (type) {
     case "user":
       data = {
-        title: "USERS",
+        title: "Tổng Sản Phẩm",
         isMoney: false,
-        link: "See all users",
+        // link: "See all users",
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -31,9 +38,9 @@ const Widget = ({ type }) => {
       break;
     case "order":
       data = {
-        title: "ORDERS",
-        isMoney: false,
-        link: "View all orders",
+        title: "Tổng Giá",
+        isMoney: true,
+        // link: "View all orders",
         icon: (
           <ShoppingCartOutlinedIcon
             className="icon"
@@ -47,9 +54,9 @@ const Widget = ({ type }) => {
       break;
     case "earning":
       data = {
-        title: "EARNINGS",
-        isMoney: true,
-        link: "View net earnings",
+        title: "Tổng Bình Luận",
+        isMoney: false,
+        // link: "View net earnings",
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -60,9 +67,9 @@ const Widget = ({ type }) => {
       break;
     case "balance":
       data = {
-        title: "BALANCE",
-        isMoney: true,
-        link: "See details",
+        title: "Tổng Đã Bán",
+        isMoney: false,
+        // link: "See details",
         icon: (
           <AccountBalanceWalletOutlinedIcon
             className="icon"
@@ -83,7 +90,7 @@ const Widget = ({ type }) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "$"} {amount}
+          {data.isMoney && "đ"} {currencyFormat}
         </span>
         <span className="link">{data.link}</span>
       </div>

@@ -1,0 +1,62 @@
+2022-06-27 16:28:18 [scrapy.utils.log] INFO: Scrapy 1.7.3 started (bot: crawl)
+2022-06-27 16:28:18 [scrapy.utils.log] INFO: Versions: lxml 4.4.1.0, libxml2 2.9.5, cssselect 1.1.0, parsel 1.5.2, w3lib 1.21.0, Twisted 19.7.0, Python 3.6.0 (v3.6.0:41df79263a11, Dec 23 2016, 08:06:12) [MSC v.1900 64 bit (AMD64)], pyOpenSSL 19.0.0 (OpenSSL 1.1.1c  28 May 2019), cryptography 2.7, Platform Windows-10-10.0.19041-SP0
+2022-06-27 16:28:18 [scrapy.crawler] INFO: Overridden settings: {'BOT_NAME': 'crawl', 'COMMANDS_MODULE': 'crawl.commands', 'DUPEFILTER_CLASS': 'scrapy_splash.SplashAwareDupeFilter', 'HTTPCACHE_STORAGE': 'scrapy_splash.SplashAwareFSCacheStorage', 'LOG_FILE': 'logs\\default\\tikipy\\789139a2f5fb11ec908bacd564a90faa.log', 'NEWSPIDER_MODULE': 'crawl.spiders', 'SPIDER_MODULES': ['crawl.spiders'], 'USER_AGENT': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'}
+2022-06-27 16:28:18 [scrapy.extensions.telnet] INFO: Telnet Password: c5d207b0d5992242
+2022-06-27 16:28:19 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.logstats.LogStats']
+2022-06-27 16:28:19 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy_splash.SplashCookiesMiddleware',
+ 'scrapy_splash.SplashMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2022-06-27 16:28:19 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy_splash.SplashDeduplicateArgsMiddleware',
+ 'scrapy.spidermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2022-06-27 16:28:20 [mysql.connector.connection] DEBUG: # _do_auth(): user: root
+2022-06-27 16:28:20 [mysql.connector.connection] DEBUG: # _do_auth(): self._auth_plugin: 
+2022-06-27 16:28:20 [mysql.connector.connection] DEBUG: # _do_auth(): user: root
+2022-06-27 16:28:20 [mysql.connector.connection] DEBUG: # _do_auth(): password: 12345
+2022-06-27 16:28:20 [mysql.connector.connection] DEBUG: new_auth_plugin: caching_sha2_password
+2022-06-27 16:28:20 [scrapy.middleware] INFO: Enabled item pipelines:
+['crawl.pipelines.CrawlPipeline']
+2022-06-27 16:28:20 [scrapy.core.engine] INFO: Spider opened
+2022-06-27 16:28:20 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2022-06-27 16:28:20 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2022-06-27 16:28:20 [scrapy.core.downloader.tls] WARNING: Remote certificate is not valid for hostname "tiki.vn"; VerificationError(errors=[DNSMismatch(mismatched_id=DNS_ID(hostname=b'tiki.vn'))])
+2022-06-27 16:28:20 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://tiki.vn/search?q=%C4%91%E1%BB%93+%C4%83n> (referer: None)
+2022-06-27 16:28:21 [scrapy.core.engine] INFO: Closing spider (finished)
+2022-06-27 16:28:21 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 276,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 3105,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/200': 1,
+ 'elapsed_time_seconds': 0.828998,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2022, 6, 27, 9, 28, 21, 43730),
+ 'log_count/DEBUG': 6,
+ 'log_count/INFO': 10,
+ 'log_count/WARNING': 1,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2022, 6, 27, 9, 28, 20, 214732)}
+2022-06-27 16:28:21 [scrapy.core.engine] INFO: Spider closed (finished)

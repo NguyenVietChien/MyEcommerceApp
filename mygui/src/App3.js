@@ -3,19 +3,22 @@ import PersonAdd from "./components/tests/PersonAdd.jsx";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import FruitSelector from "./components/tests/Select.jsx";
-import Select from "./components/tests/Select.jsx";
+// import Select from "./components/tests/Select.jsx";
 import MediaCard from "./components/card/Card.js";
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-
+import Select from '@mui/material/Select';
 // import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 // import Select from '@mui/material/Select';
 
+import axios from 'axios';
+
 function App3() {
+
     const [items, setItems] = useState([]);
 
     const [pageCount, setpageCount] = useState(0);
@@ -36,52 +39,46 @@ function App3() {
     // console.log(limit)
 
     useEffect(() => {
-        const getProduct = async () => {
-            const res = await fetch(
-                `http://127.0.0.1:8008/api/tasks/?p=1`
-            );
-            const data = await res.json();
+        const getProduct = async (url, params) => {
+            const res = await fetch(url, params);
 
+            const data = await res.json();
             const total = data.count;
             setpageCount(Math.ceil(total / limit));
-
             setItems(data.results)
         };
 
-        let query = async () => {
-            const res = await fetch(
-                `http://127.0.0.1:8008/api/tasks`
-            );
-        }
+        // getProduct(`http://127.0.0.1:8008/api/tasks/?p=1`, {});
 
-        getProduct();
+        const price = {
+            fromPrice: 120000,
+            toPrice: 4000000,
+        };
+
+        // getProduct(urlQuery, { price });
 
     }, [limit]);
 
 
 
-    const fetchComments = async (currentPage) => {
-        const res = await fetch(
-            `http://127.0.0.1:8008/api/tasks/?p=${currentPage}`
-        );
-        const data = await res.json();
+    // const fetchComments = async (url, currentPage) => {
+    //     const res = await fetch(
+    //         `${url}?p=${currentPage}`
+    //     );
+    //     const data = await res.json();
 
-        return data;
-    };
+    //     return data;
+    // };
 
-    const handlePageClick = async (data) => {
-        console.log(data.selected + 1);
+    // const urlQuery = 'http://127.0.0.1:8008/api/tasks/set_query/';
 
-        let currentPage = data.selected + 1;
-
-        const commentsFormServer = await fetchComments(currentPage);
-        console.log(commentsFormServer);
-        setItems(commentsFormServer.results);
-        // scroll to the top
-        //window.scrollTo(0, 0)
-    };
-
-
+    // const handlePageClick = async (data) => {
+    //     console.log(data.selected + 1);
+    //     let currentPage = data.selected + 1;
+    //     const commentsFormServer = await fetchComments(urlQuery, currentPage);
+    //     console.log(commentsFormServer);
+    //     setItems(commentsFormServer.results);
+    // };
 
     const [age, setAge] = React.useState('1');
 
@@ -93,25 +90,11 @@ function App3() {
 
     return (
         <div className="container">
-            <Box sx={{ minWidth: 120 }}>
-                <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={age}
-                        label="Age"
-                        onChange={handleChange}
-                    >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                </FormControl>
-            </Box>
 
             <PersonAdd></PersonAdd>
-            <div className="row m-2">
+
+            {/* Chỗ này tạm ẩn để thử nghiệm trên PersonAdd */}
+            {/* <div className="row m-2">
                 {items.map((item) => {
                     return (
                         <div key={item.id} className="col-sm-6 col-md-3 v my-3">
@@ -140,7 +123,7 @@ function App3() {
                 breakClassName={"page-item"}
                 breakLinkClassName={"page-link"}
                 activeClassName={"active"}
-            />
+            /> */}
         </div >
     )
 }

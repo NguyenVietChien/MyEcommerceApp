@@ -1,15 +1,34 @@
-env\scripts\activate
+venv\scripts\activate
 
-cd myecommerce
+cd myecommerce ; cd crawl
 
-cd crawltest
+cd myecommerce ; cd crawltest
 
-cd crawl
+cd myecommerce ; py manage.py runserver 127.0.0.1:8008
 
-`py manage.py runserver 127.0.0.1:800x`
+cd crawltest ; scrapyd
 
-py manage.py makemigrations 
+cd crawl ; scrapyd
+
+cd mygui ; npm start
+
+curl http://localhost:6800/schedule.json -d project=default -d spider=tikipy
+
+scrapy crawl lazapy
+
+py manage.py runserver 127.0.0.1:8008
+
+py manage.py makemigrations
 
 py manage.py migrate
 
-scrapy crawl [spider] -o [something].json
+scrapy crawl shopeecrawl
+
+pip freeze > requirements.txt
+
+
+cd scrapyd
+
+py manage.py runserver 127.0.0.1:8000
+
+cd scrapy_app ; scrapyd

@@ -1,14 +1,15 @@
-from turtle import title
-from django.db import models
 
+from django.db import models
 # Create your models here.
 
 
 class Product(models.Model):
-
-    product_name = models.TextField(primary_key=True)
+    product_id = models.TextField(primary_key=True)
+    product_name = models.TextField()
     product_price = models.IntegerField()
     product_link = models.TextField()
+    product_thumbnail = models.TextField()
+
     rating_point = models.FloatField()
     total_comments = models.IntegerField()
 
@@ -21,7 +22,7 @@ class Product(models.Model):
     platform = models.TextField()
 
     def __str__(self):
-        return self.product_name
+        return self.product_id
 
     class Meta:
         db_table = 'myecommerce_tb'

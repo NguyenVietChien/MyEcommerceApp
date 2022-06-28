@@ -11,24 +11,39 @@ import EnhancedTable from "./components/datatable/DataTables.jsx";
 import App3 from "./App3.js";
 
 // create a class that extends the component
-class App2 extends Component {
+class App2 extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { value: '' };
 
-    // let app = App3.items;
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        event.preventDefault();
+        this.setState({ value: event.target.value },
+            () => {
+                console.log("New state in ASYNC callback:", this.state.text);
+            });
+        console.log(this.state.value)
+        event.preventDefault();
+    }
+
+    handleSubmit(event) {
+        alert('A name was submitted: ' + this.state.value);
+        event.preventDefault();
+    }
 
     render() {
-        let app = App3.items;
-        // const app3 = App3.items;
-
         return (
-            <>
-                <div className="row">
-                    {app.map(country => {
-                        return country.product_name;
-                    })}
-                </div>
-                <EnhancedTable></EnhancedTable>
-            </>
-
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Name:
+                    <input type="text" value={this.state.value} onChange={this.handleChange} />
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
         );
     }
 }

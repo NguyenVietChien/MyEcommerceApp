@@ -1,0 +1,2 @@
+2022-06-23 20:58:16 [scrapy.utils.log] INFO: Scrapy 1.7.3 started (bot: crawl)
+2022-06-23 20:58:16 [scrapy.utils.log] INFO: Versions: lxml 4.4.1.0, libxml2 2.9.5, cssselect 1.1.0, parsel 1.5.2, w3lib 1.21.0, Twisted 19.7.0, Python 3.6.0 (v3.6.0:41df79263a11, Dec 23 2016, 08:06:12) [MSC v.1900 64 bit (AMD64)], pyOpenSSL 19.0.0 (OpenSSL 1.1.1c  28 May 2019), cryptography 2.7, Platform Windows-10-10.0.19041-SP0

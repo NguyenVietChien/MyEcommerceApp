@@ -1,0 +1,73 @@
+2022-06-24 11:02:08 [scrapy.utils.log] INFO: Scrapy 1.7.3 started (bot: crawl)
+2022-06-24 11:02:08 [scrapy.utils.log] INFO: Versions: lxml 4.4.1.0, libxml2 2.9.5, cssselect 1.1.0, parsel 1.5.2, w3lib 1.21.0, Twisted 19.7.0, Python 3.6.0 (v3.6.0:41df79263a11, Dec 23 2016, 08:06:12) [MSC v.1900 64 bit (AMD64)], pyOpenSSL 19.0.0 (OpenSSL 1.1.1c  28 May 2019), cryptography 2.7, Platform Windows-10-10.0.19041-SP0
+2022-06-24 11:02:08 [scrapy.crawler] INFO: Overridden settings: {'BOT_NAME': 'crawl', 'COMMANDS_MODULE': 'crawl.commands', 'DUPEFILTER_CLASS': 'scrapy_splash.SplashAwareDupeFilter', 'HTTPCACHE_STORAGE': 'scrapy_splash.SplashAwareFSCacheStorage', 'LOG_FILE': 'logs\\default\\tiki\\678b33f0f37211ec9f4cacd564a90faa.log', 'NEWSPIDER_MODULE': 'crawl.spiders', 'SPIDER_MODULES': ['crawl.spiders'], 'USER_AGENT': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'}
+2022-06-24 11:02:08 [scrapy.extensions.telnet] INFO: Telnet Password: d53c46561640ea12
+2022-06-24 11:02:08 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.logstats.LogStats']
+2022-06-24 11:02:08 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy_splash.SplashCookiesMiddleware',
+ 'scrapy_splash.SplashMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2022-06-24 11:02:08 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy_splash.SplashDeduplicateArgsMiddleware',
+ 'scrapy.spidermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2022-06-24 11:02:09 [mysql.connector.connection] DEBUG: # _do_auth(): user: root
+2022-06-24 11:02:09 [mysql.connector.connection] DEBUG: # _do_auth(): self._auth_plugin: 
+2022-06-24 11:02:09 [mysql.connector.connection] DEBUG: # _do_auth(): user: root
+2022-06-24 11:02:09 [mysql.connector.connection] DEBUG: # _do_auth(): password: 12345
+2022-06-24 11:02:09 [mysql.connector.connection] DEBUG: new_auth_plugin: caching_sha2_password
+2022-06-24 11:02:09 [scrapy.middleware] INFO: Enabled item pipelines:
+['crawl.pipelines.CrawlPipeline']
+2022-06-24 11:02:09 [scrapy.core.engine] INFO: Spider opened
+2022-06-24 11:02:09 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2022-06-24 11:02:09 [scrapy.utils.signal] ERROR: Error caught on signal handler: <bound method OffsiteMiddleware.spider_opened of <scrapy.spidermiddlewares.offsite.OffsiteMiddleware object at 0x0000025DBFF205F8>>
+Traceback (most recent call last):
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\twisted\internet\defer.py", line 151, in maybeDeferred
+    result = f(*args, **kw)
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\pydispatch\robustapply.py", line 55, in robustApply
+    return receiver(*arguments, **named)
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\scrapy\spidermiddlewares\offsite.py", line 67, in spider_opened
+    self.host_regex = self.get_host_regex(spider)
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\scrapy\spidermiddlewares\offsite.py", line 58, in get_host_regex
+    if url_pattern.match(domain):
+TypeError: expected string or bytes-like object
+2022-06-24 11:02:09 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2022-06-24 11:02:09 [scrapy.core.engine] ERROR: Error while obtaining start requests
+Traceback (most recent call last):
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\scrapy\core\engine.py", line 127, in _next_request
+    request = next(slot.start_requests)
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\scrapy_splash\middleware.py", line 173, in process_start_requests
+    for req in start_requests:
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\myecommerce\crawl\crawl\spiders\ecommerce_spider.py", line 18, in start_requests
+    yield scrapy.Request(self.url, self.parse)
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\scrapy\http\request\__init__.py", line 25, in __init__
+    self._set_url(url)
+  File "C:\Users\DELL\Desktop\Git\MyEcommerceApp\venv\lib\site-packages\scrapy\http\request\__init__.py", line 63, in _set_url
+    raise TypeError('Request url must be str or unicode, got %s:' % type(url).__name__)
+TypeError: Request url must be str or unicode, got NoneType:
+2022-06-24 11:02:09 [scrapy.core.engine] INFO: Closing spider (finished)
+2022-06-24 11:02:09 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'elapsed_time_seconds': 0.018402,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2022, 6, 24, 4, 2, 9, 328862),
+ 'log_count/DEBUG': 5,
+ 'log_count/ERROR': 2,
+ 'log_count/INFO': 10,
+ 'start_time': datetime.datetime(2022, 6, 24, 4, 2, 9, 310460)}
+2022-06-24 11:02:09 [scrapy.core.engine] INFO: Spider closed (finished)

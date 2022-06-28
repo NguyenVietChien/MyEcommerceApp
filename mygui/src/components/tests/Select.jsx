@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Select() {
+export default function Selects() {
     const getInitialState = () => {
         const value = 1;
         return value;
